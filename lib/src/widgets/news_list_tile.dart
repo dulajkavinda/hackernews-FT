@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../models/item_model.dart';
-import '../blocs/stories_bloc.dart';
 import '../blocs/stories_provider.dart';
 
 class NewsListTile extends StatelessWidget {
