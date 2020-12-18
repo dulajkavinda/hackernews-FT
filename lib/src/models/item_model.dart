@@ -45,7 +45,7 @@ class ItemModel {
         title = parsedJson['title'],
         descendants = parsedJson['descendants'];
 
-  Map<String, dynamic> toMapForDb() {
+  Map<String, dynamic> toMap() {
     return <String, dynamic>{
       "id": id,
       "deleted": deleted ? 1 : 0,

@@ -13,29 +13,35 @@ class NewsDbProvider implements Source, Cache {
     init();
   }
 
+  // Todo - store and fetch top ids
+  Future<List<int>> fetchTopIds() {
+    return null;
+  }
+
   void init() async {
-    Directory documentDirectory = await getApplicationDocumentsDirectory();
-    final path = join(documentDirectory.path, 'items.db');
+    Directory documentsDirectory = await getApplicationDocumentsDirectory();
+    final path = join(documentsDirectory.path, "items4.db");
     db = await openDatabase(
       path,
       version: 1,
-      onCreate: (Database newDb, int version) async {
-        await newDb.execute("""
-        CREATE TABLE Items
-          (
-            id INTEGER PRIMARY KEY,
-            type TEXT,
-            by TEXT,
-            time INTEGER,
-            text TEXT,
-            parent INTEGER,
-            kids BLOB,
-            dead INTEGER,
-            deleted INTEGER,
-            score INTEGER,
-            titile TEXT,
-            descendants INTEGER
-          )
+      onCreate: (Database newDb, int version) {
+        newDb.execute("""
+          CREATE TABLE Items
+            (
+              id INTEGER PRIMARY KEY,
+              type TEXT,
+              by TEXT,
+              time INTEGER,
+              text TEXT,
+              parent INTEGER,
+              kids BLOB,
+              dead INTEGER,
+              deleted INTEGER,
+              url TEXT,
+              score INTEGER,
+              title TEXT,
+              descendants INTEGER
+            )
         """);
       },
     );
@@ -52,16 +58,20 @@ class NewsDbProvider implements Source, Cache {
     if (maps.length > 0) {
       return ItemModel.fromDb(maps.first);
     }
+
     return null;
   }
 
   Future<int> addItem(ItemModel item) {
-    return db.insert("Items", item.toMapForDb());
+    return db.insert(
+      "Items",
+      item.toMap(),
+      conflictAlgorithm: ConflictAlgorithm.ignore,
+    );
   }
 
-  @override
-  Future<List<int>> fetchTopIds() {
-    return null;
+  Future<int> clear() {
+    return db.delete("Items");
   }
 }
 

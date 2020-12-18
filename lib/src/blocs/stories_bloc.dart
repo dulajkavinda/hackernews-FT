@@ -14,7 +14,7 @@ class StoriesBloc {
   Function(int) get fetchItem => _items.sink.add;
 
   StoriesBloc() {
-    _items.stream.transform(_itemsTransformer());
+    items = _items.stream.transform(_itemsTransformer());
   }
 
   fetchTopIds() async {
@@ -24,7 +24,8 @@ class StoriesBloc {
 
   _itemsTransformer() {
     return ScanStreamTransformer(
-      (Map<int, Future<ItemModel>> cache, int id, _) {
+      (Map<int, Future<ItemModel>> cache, int id, index) {
+        print('$index');
         cache[id] = _repository.fetchItem(id);
         return cache;
       },
