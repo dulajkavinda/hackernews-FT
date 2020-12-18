@@ -19,12 +19,12 @@ void main() {
   test('FetchItem returns a ItemModel', () async {
     final newsApi = NewsApiProvider();
     newsApi.client = MockClient((request) async {
-      final jsonMap = {"id": 1};
+      final jsonMap = {"id": 001};
       return Response(json.encode(jsonMap), 200);
     });
 
     final item = await newsApi.fetchItem(1);
 
-    expect(item.id, 1);
+    expect(item.id, 001);
   });
 }
